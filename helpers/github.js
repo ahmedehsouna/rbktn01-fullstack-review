@@ -1,6 +1,6 @@
 // const request   = require('request');
-const config    = require('config.js');
-const Saver     = require("database/index.js").save,
+const config    = require('/config.js');
+const Saver     = require("/database/index.js").save,
 fetch       = require("fetch").fetchUrl
 
 

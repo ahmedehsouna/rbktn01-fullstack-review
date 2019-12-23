@@ -1,9 +1,9 @@
 let express     = require('express'),
     bodyParser  = require("body-parser"),
     fetch       = require("fetch").fetchUrl,
-    Saver       = require("database/index.js").save,
-    Repo        = require("database/index.js").Repo,
-    helper      = require('helpers/github.js').getReposByUsername,
+    Saver       = require("/database/index.js").save,
+    Repo        = require("/database/index.js").Repo,
+    helper      = require('/helpers/github.js').getReposByUsername,
     app         = express();
 
 app.use(bodyParser.json())
