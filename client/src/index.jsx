@@ -3,52 +3,53 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
+import  _ from 'lodash'
 
 var prod = "https://aqueous-cliffs-53654.herokuapp.com"
-
 function post(word, callback){
-  $.ajax( "/repos", {
+  $.ajax(  "/repos", {
     type : "POST",
     data : {username : word},
     success: (result) =>{
       callback(null, result)
       // console.log(result)
       // this.setState({
-      //   repos : result
-      // })
-  },
-  error: function (jqXhr, textStatus, errorMessage) {
-    callback(errorMessage, null)
-}
+        //   repos : result
+        // })
+      },
+      error: function (jqXhr, textStatus, errorMessage) {
+        callback(errorMessage, null)
+      }
 
-});
-}
-function get(page, callback){
-  $.ajax(`/repos?page=` + page, {
-    type : "GET",
-    success: (result) =>{
-      callback(null, result)
-      // console.log(result)
+    });
+  }
+  function get(page, callback){
+    $.ajax( `/repos?page=` + page, {
+      type : "GET",
+      success: (result) =>{
+        callback(null, result)
+        // console.log(result)
 
-  },
-  error: function (jqXhr, textStatus, errorMessage) {
-    callback(errorMessage, null)
-}
+      },
+      error: function (jqXhr, textStatus, errorMessage) {
+        callback(errorMessage, null)
+      }
 
-});
-}
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      repos: [],
-      page: 0
-    }
-
+    });
   }
 
-  componentDidMount(){
+  class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        repos: [],
+        page: 0,
+        debounce: _.debounce(this.changePage,500)
+      }
+
+    }
+
+    componentDidMount(){
     get(this.state.page, (err,data) => {
       if(err) console.log(err)
       else {
@@ -75,7 +76,12 @@ class App extends React.Component {
     })
 
   }
+  debounceChangePage(number){
+    this.state.debounce.call(this,number)
+  }
+
   changePage(number){
+
     get(this.state.page + number, (err,data) => {
       if(err) console.log(err)
       else {
@@ -87,14 +93,16 @@ class App extends React.Component {
     })
 
   }
+
+
   render () {
     return (<div className="  container " style={{background : "linear-gradient(to right, #0f0c29, #302b63, #24243e)", color : "white"}}>
       <div className="row justify-content-center">
       <h1 className="col-4">Github Fetcher</h1>
       <div className="col-12">
         <h3 className="mx-2">page : {this.state.page}</h3>
-        <button disabled={this.state.repos.length < 25} className="mx-2 btn-sm" onClick={this.changePage.bind(this,1)}>next</button>
-        <button disabled={this.state.page == 0} className="mx-2 btn-sm" onClick={this.changePage.bind(this,-1)}>previous</button>
+        <button disabled={this.state.repos.length < 25} className="mx-2 btn-sm" onClick={this.debounceChangePage.bind(this,1)}>next</button>
+        <button disabled={this.state.page == 0} className="mx-2 btn-sm" onClick={this.debounceChangePage.bind(this,-1)}>previous</button>
       </div>
       <Search  onSearch={this.search.bind(this)}/>
       <RepoList  repos={this.state.repos}/>
