@@ -1,5 +1,5 @@
 // const request   = require('request');
-const config    = require('../config.js');
+// const config    = require('../config.js');
 const Saver     = require("../database/index.js").save,
 fetch       = require("fetch").fetchUrl
 
@@ -10,14 +10,14 @@ let getReposByUsername = (username,callback) => {
 
   // The options object has been provided to help you out,
   // but you'll have to fill in the URL
-  let options = {
-    headers: {
-      'User-Agent': 'request',
-      'Authorization': `token ${config.TOKEN}`
-    }
-  };
+  // let options = {
+  //   headers: {
+  //     'User-Agent': 'request',
+  //     'Authorization': `token ${config.TOKEN}`
+  //   }
+  // };
 
-  fetch(`https://api.github.com/users/${username}/repos`, options , (err , meta ,data) =>{
+  fetch(`https://api.github.com/users/${username}/repos` , (err , meta ,data) =>{
     if(err){
       console.log(err)
     }else {
