@@ -21,8 +21,8 @@ function post(word, callback){
 
 });
 }
-function get(callback){
-  $.ajax("https://aqueous-cliffs-53654.herokuapp.com/repos", {
+function get(page, callback){
+  $.ajax(`https://aqueous-cliffs-53654.herokuapp.com/repos?page=` + page, {
     type : "GET",
     success: (result) =>{
       callback(null, result)
@@ -40,13 +40,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      repos: []
+      repos: [],
+      page: 0
     }
 
   }
 
   componentDidMount(){
-    get((err,data) => {
+    get(this.page, (err,data) => {
       if(err) console.log(err)
       else {
         this.setState({
@@ -72,12 +73,27 @@ class App extends React.Component {
     })
 
   }
-
+  changePage(bool){
+    this.setState({
+      page: bool?page+1 : page-1
+    })
+    get(this.page, (err,data) => {
+      if(err) console.log(err)
+      else {
+        this.setState({
+          repos : data
+        })
+      }
+    })
+  }
   render () {
     return (<div className="  container " style={{background : "black", color : "white"}}>
       <div className="row justify-content-center">
       <h1 className="col-4">Github Fetcher</h1>
-      <div className="col-12"></div>
+      <div className="col-12">
+        <button onClick={changePage.bind(this,true)}>next</button>
+        <button onClick={changePage.bind(this,false)}>next</button>
+      </div>
       <Search  onSearch={this.search.bind(this)}/>
       <RepoList  repos={this.state.repos}/>
 
