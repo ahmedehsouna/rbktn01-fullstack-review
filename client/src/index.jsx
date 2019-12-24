@@ -75,7 +75,7 @@ class App extends React.Component {
   }
   changePage(bool){
     this.setState({
-      page: bool?page+1 : page-1
+      page: bool?this.page+1 : this.page-1
     })
     get(this.page, (err,data) => {
       if(err) console.log(err)
@@ -91,8 +91,9 @@ class App extends React.Component {
       <div className="row justify-content-center">
       <h1 className="col-4">Github Fetcher</h1>
       <div className="col-12">
-        <button onClick={this.changePage.bind(this,true)}>next</button>
-        <button onClick={this.changePage.bind(this,false)}>next</button>
+        <button className="mx-2" onClick={this.changePage.bind(this,true)}>next</button>
+        <button className="mx-2" onClick={this.changePage.bind(this,false)}>previous</button>
+        <h3>page : {this.page}</h3>
       </div>
       <Search  onSearch={this.search.bind(this)}/>
       <RepoList  repos={this.state.repos}/>
