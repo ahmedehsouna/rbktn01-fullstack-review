@@ -91,8 +91,8 @@ class App extends React.Component {
       <div className="row justify-content-center">
       <h1 className="col-4">Github Fetcher</h1>
       <div className="col-12">
-        <button onClick={changePage.bind(this,true)}>next</button>
-        <button onClick={changePage.bind(this,false)}>next</button>
+        <button onClick={this.changePage.bind(this,true)}>next</button>
+        <button onClick={this.changePage.bind(this,false)}>next</button>
       </div>
       <Search  onSearch={this.search.bind(this)}/>
       <RepoList  repos={this.state.repos}/>
