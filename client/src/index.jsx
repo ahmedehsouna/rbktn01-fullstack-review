@@ -4,8 +4,10 @@ import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
 
+var prod = "https://aqueous-cliffs-53654.herokuapp.com"
+
 function post(word, callback){
-  $.ajax("https://aqueous-cliffs-53654.herokuapp.com/repos", {
+  $.ajax(prod + "/repos", {
     type : "POST",
     data : {username : word},
     success: (result) =>{
@@ -22,7 +24,7 @@ function post(word, callback){
 });
 }
 function get(page, callback){
-  $.ajax(`https://aqueous-cliffs-53654.herokuapp.com/repos?page=` + page, {
+  $.ajax(prod + `/repos?page=` + page, {
     type : "GET",
     success: (result) =>{
       callback(null, result)
@@ -47,7 +49,7 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    get(this.page, (err,data) => {
+    get(this.state.page, (err,data) => {
       if(err) console.log(err)
       else {
         this.setState({
@@ -75,9 +77,9 @@ class App extends React.Component {
   }
   changePage(bool){
     this.setState({
-      page: bool?this.page+1 : this.page-1
+      page: bool?this.state.page+1 : this.state.page-1
     })
-    get(this.page, (err,data) => {
+    get(this.state.page, (err,data) => {
       if(err) console.log(err)
       else {
         this.setState({
@@ -93,7 +95,7 @@ class App extends React.Component {
       <div className="col-12">
         <button className="mx-2" onClick={this.changePage.bind(this,true)}>next</button>
         <button className="mx-2" onClick={this.changePage.bind(this,false)}>previous</button>
-        <h3>page : {this.page}</h3>
+        <h3>page : {this.state.page}</h3>
       </div>
       <Search  onSearch={this.search.bind(this)}/>
       <RepoList  repos={this.state.repos}/>
