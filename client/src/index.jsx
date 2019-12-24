@@ -5,7 +5,7 @@ import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
 
 function post(word, callback){
-  $.ajax("/repos", {
+  $.ajax("https://aqueous-cliffs-53654.herokuapp.com/repos", {
     type : "POST",
     data : {username : word},
     success: (result) =>{
@@ -22,7 +22,7 @@ function post(word, callback){
 });
 }
 function get(callback){
-  $.ajax("/repos", {
+  $.ajax("https://aqueous-cliffs-53654.herokuapp.com/repos", {
     type : "GET",
     success: (result) =>{
       callback(null, result)
